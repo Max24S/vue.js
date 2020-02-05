@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>day_bithday</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <form id="frm" action="" @submit="submit">
+       <label for="inpt1"v-html="label1_name"></label> <input id="inpt1" type="date" v-model="day_b">
+       <label for="inpt2" v-html="label2_name"></label><input type="date" v-model="now"  name="" id="inpt2">
+       <input class="btn" @click="visuble()" type="submit"> 
+       <div class="main" :style="style">
+           <div class="age">Age={{difference_in_dates()}}</div>
+           <div class="summary">Summary</div> 
+           <ul >
+               <li v-for="i in massive">{{i}}</li>
+           </ul>
+           <div class=""></div>
+           <div class="my_container">
+            <div class="cake">
+              <div class="plate"></div>
+              <div class="layer layer-bottom"></div>
+              <div class="layer layer-middle"></div>
+              <div class="layer layer-top"></div>
+              <div class="icing"></div>
+              <div class="drip drip1"></div>
+              <div class="drip drip2"></div>
+              <div class="drip drip3"></div>
+              <div class="candle">
+                  <div class="flame"></div>
+              </div>
+          </div>
+                <div class="container">
+                    <div class="balloon">
+                        <div><span>☺</span>
+                        </div>
+                        <div><span>B</span>
+                        </div>
+                        <div><span>D</span>
+                        </div>
+                        <div><span>A</span>
+                        </div>
+                        <div><span>Y</span>
+                        </div>
+                        <div><span>!</span>
+                        </div>
+                    </div>
+
+                    <div class="bithday"><div>Next birthday</div><div>{{next_bithday()}}</div></div>
+                </div>
+          </div>
+       </div>   
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+       let app = new Vue({
+            el: '#frm',
+            data: { 
+                message: 'Привет, Vue!',
+                day_b:"2010-08-16",
+                now:new Date(),
+                style:'',
+                years:'',
+                massive:[],
+                y:'',
+                m:'',
+                w:'',
+                d:'',
+                label1_name:'<span>Date of birth</span>',
+                label2_name:'<span>Today</span>'
+            },
+            methods:{
+                difference_in_days(){
+                    date1=new Date(this.day_b);
+                    date2=new Date(this.now);
+                    let days = Math.floor(Math.abs(date1-date2)/(24*3600*1000));
+                    return `${days} days`;
+                },
+                difference_in_years(){
+                    date1=new Date(this.day_b);
+                    date2=new Date(this.now);
+                    let years =Math.floor(Math.abs(date1-date2)/(24*3600*1000)/365);
+                    return `${years} years`;
+                },
+                difference_in_months(){
+                    date1=new Date(this.day_b);
+                    date2=new Date(this.now);
+
+                    let months = date2.getMonth() - date1.getMonth() 
+                    + (12 * (date2.getFullYear() - date1.getFullYear()));
+
+                    if(date2.getDate() < date1.getDate()){
+                        months--;
+                    }
+                    return `${months} months`;
+                }
+                ,
+                difference_in_weeks(){
+                    let week=1000 * 60 * 60 * 24 * 7;
+                    date1=new Date(this.day_b);
+                    date2=new Date(this.now);
+                    return `${Math.floor(Math.abs(date1-date2)/week)} weeks`;
+                }
+                ,
+                difference_in_dates(){
+                    date = this.day_b.split('-');
+                    let today = new Date(this.now);
+                    let year = today.getFullYear();
+                    let month = today.getMonth() + 1;
+                    let day = today.getDate();
+                    let yy = parseInt(date[0]);
+                    let mm = parseInt(date[1]);
+                    let dd = parseInt(date[2]);
+                    let years, months, days;
+                    // months
+                    months = month - mm;
+                    if (day < dd) {
+                        months = months - 1;
+                    }
+                    // years
+                    years = year - yy;
+                    if (month * 100 + day < mm * 100 + dd) {
+                        years = years - 1;
+                        months = months + 12;
+                    }
+                    days = Math.floor((today.getTime() - (new Date(yy + years, mm + months - 1, dd)).getTime()) / (24 * 60 * 60 * 1000));
+                    rest=`${(years)} years ${(months<10? '0' : '')+months} months ${(days<10? '0' : '')+days} days`            
+                    return (rest);
+                },
+                next_bithday(){
+                    date = this.day_b.split('-');
+                    let today = new Date(this.now);
+                    let year = parseInt(date[0]);
+                    let month =  parseInt(date[1]);
+                    let day = parseInt(date[2]);
+                    let yy = today.getFullYear(); 
+                    let mm = today.getMonth() +2;
+                    let dd = today.getDate(); 
+                    let years, months, days;
+                    let t=new Date();
+                    let rest;
+                    let birth = new Date(t.getFullYear(),month,day);
+                    year = birth.getFullYear();
+                    month = birth.getMonth() + 1;
+                    day= birth.getDate();
+                    birth.getDay()
+                    // months
+                    months = month - mm;
+                    if (day < dd) {
+                        months = months - 1;
+                    }
+                    // years
+                    years =year - yy;
+                    if (month * 100 + day < mm * 100 + dd) {
+                        years = years - 1;
+                        months = months + 12;
+                    }
+                    let days_massive=["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"]
+                    days = Math.floor((birth.getTime() - (new Date(yy + years, mm + months - 1, dd)).getTime()) / (24 * 60 * 60 * 1000));
+                    let gday=new Date(yy,(month-2),day);
+                    if (years==0){
+                    rest=`${(months<10? '0' : '')+months} months ${(days<10? '0' : '')+days} days,
+                     day of the week-${days_massive[gday.getDay()]}` } 
+                    else if(years<0){
+                        rest=`${Math.abs(years+1)} year ${(months<10? '0' : '')+months} months ${(days<10? '0' : '')+days} days,day of the week-${days_massive[gday.getDay()]}`    
+                    }
+                    return rest;  
+                },    
+                today_Date(){
+                    //  now = new Date();
+                    let dd = (this.now.getDate() < 10 ? '0' : '') + this.now.getDate();
+                    // 01, 02, 03, ... 10, 11, 12
+                    let MM = ((this.now.getMonth() + 1) < 10 ? '0' : '') + (this.now.getMonth()+1);
+                     // 1970, 1971, ... 2015, 2016, ...
+                    let yyyy = this.now.getFullYear();
+                    return `${yyyy}-${MM}-${dd}`;
+                },
+                visuble(){
+                     this.style="display:block;width: 448px;height: 300px;display: block;margin-left: -365px; margin-top: 200px;"
+                },
+                Update(){
+                    this.y=this.difference_in_years();
+                    this.m=this.difference_in_months();
+                    this.w=this.difference_in_weeks();
+                    this.d=this.difference_in_days();
+                    this.massive=[this.y,this.m,this.w, this.d];
+                       this.massive=this.massive;
+                },
+                submit(event){
+                    event.preventDefault()
+                    this.Update();
+              }  
+            }
+        })
+        app.now =app.today_Date();
+
+    </script>
+</body>
+</html>
