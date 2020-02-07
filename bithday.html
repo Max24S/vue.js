@@ -17,6 +17,7 @@
            <div class="age">Age={{difference_in_dates()}}</div>
            <div class="summary">Summary</div> 
            <ul >
+            {{Update}}
                <li v-for="i in massive">{{i}}</li>
            </ul>
            <div class=""></div>
@@ -182,18 +183,20 @@
                 visuble(){
                      this.style="width: 448px;height: 300px;display: block;margin-left: -365px; margin-top: 200px;"
                 },
+                submit(event){
+                    event.preventDefault()
+                   
+              }  
+            },
+            computed:{
                 Update(){
                     this.y=this.difference_in_years();
                     this.m=this.difference_in_months();
                     this.w=this.difference_in_weeks();
                     this.d=this.difference_in_days();
                     this.massive=[this.y,this.m,this.w, this.d];
-                       this.massive=this.massive;
-                },
-                submit(event){
-                    event.preventDefault()
-                    this.Update();
-              }  
+                    this.massive=this.massive;
+                }
             }
         })
         app.now =app.today_Date();
